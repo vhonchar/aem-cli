@@ -1,0 +1,40 @@
+*.class
+
+*license.properties
+
+# NodeJS specific
+node_modules/
+package-lock.json
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+
+# Intellij project files
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Eclipse project files
+.classpath
+.project
+.settings/
+
+# output directories
+bin/
+build/
+target/
+out/
+
+# atlassian-ide-plugin settings
+atlassian-ide-plugin.xml
+
+# Visual Studio and SSDT user-specific files
+*.suo
+*.user
+*.dbmdl
+[Bb]in
+[Oo]bj
