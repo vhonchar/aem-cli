@@ -11,7 +11,6 @@
     "deps": {
       "checkDirs": [
         "lib/*",
-        "bin/*",
         "*.js"
       ]
     }
