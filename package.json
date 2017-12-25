@@ -5,7 +5,7 @@
   "bin": {
     "aem": "./index.js"
   },
-  "license": "ISC",
+  "license": "APACHE 2.0",
   "ensure": {
     "deps": {
       "checkDirs": [
