@@ -4,6 +4,9 @@ RUN yum -y update; yum clean all
 RUN yum -y install epel-release; yum clean all
 RUN yum -y install nodejs npm; yum clean all
 
-RUN npm install -g aem-cli
+ADD . /aem-cli
+WORKDIR /aem-cli
+RUN npm install
+RUN npm install -g
 
 RUN aem --help

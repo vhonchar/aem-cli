@@ -1,0 +1,6 @@
+node_modules
+.gitignore
+Dockerfile
+LICENSE
+package-lock.json
+README.md
