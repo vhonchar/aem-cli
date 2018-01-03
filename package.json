@@ -1,6 +1,6 @@
 {
   "name": "aem-cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI to work with AEM (start, stop, upload pkg, file etc.)",
   "repository": "github:VladimirGonchar/aem-cli",
   "bin": {
@@ -20,8 +20,6 @@
     "extend": "^3.0.1",
     "ps-node": "^0.1.6",
     "request": "^2.83.0",
-    "request-promise": "^4.2.2",
-    "request-promise-native": "^1.0.5",
     "server-destroy": "^1.0.1",
     "terminate": "^2.1.0"
   }
