@@ -8,7 +8,13 @@ aem installPkg package-with-SP1.zip
 aem stop 4502
 ```
 
-## aem start
+## Follow me
+
+- [Installation](docs/how-to-install.md)
+- [Tips and tricks](docs/tips-and-tricks.md)
+
+## Available commands
+### aem start
 
 Usage: `aem start [options]`
 
@@ -32,11 +38,11 @@ Explanation: starts AEM from AEM_6.3_quickstart.jar on port 4502 with author run
 **NOTE**  
 This command will wait until startup is finished if run with detached option.
 
-## aem installPkg 
+### aem installPkg 
 
 Usage: `aem installPkg [options] <zipFile>`
 
-Upload specified ZIP file to AEM and install it.
+Upload specified ZIP file to AEM and install it. Supports URL as source.
 
 Options:
 
@@ -46,11 +52,11 @@ Options:
 -h, --help               output usage information
 ```
 
-## aem installBundle 
+### aem installBundle 
 
 Usage: `installBundle [options] <bundle>`
 
-Installs specified bundle to AEM.
+Installs specified bundle to AEM. Supports URL as source.
 
 Options:
 
@@ -60,7 +66,7 @@ Options:
 -h, --help               output usage information
 ```
 
-## aem stop
+### aem stop
 
 Usage: `aem stop [options] <port>`
 
@@ -72,7 +78,7 @@ Options:
 -h, --help             output usage information
 ```
 
-## aem remove
+### aem remove
 
 Usage: `remove [options] <path>`           
 

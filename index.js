@@ -56,7 +56,7 @@ program
 
 program
     .command('installBundle <bundle>')
-    .description('Installs specified bundle to AEM.')
+    .description('Installs specified bundle to AEM. Supports URL as source.')
     .option('-p, --port <port>', 'AEM port', 4502)
     .option('-t, --timeout <timeout>', 'Timeout in seconds after installation', 5)
     .action((bundle, options) => {
@@ -70,7 +70,7 @@ program
 
 program
     .command('installPkg <zipFile>')
-    .description('Upload specified ZIP file to AEM and install it.')
+    .description('Upload specified ZIP file to AEM and install it. Supports URL as source.')
     .option('-p, --port <port>', 'AEM port', 4502)
     .option('-t, --timeout <timeout>', 'Timeout in seconds after installation', 30)
     .action((zipFile, options) => {
