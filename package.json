@@ -2,7 +2,7 @@
   "name": "aem-cli",
   "version": "0.2.0",
   "description": "CLI to work with AEM (start, stop, upload pkg, file etc.)",
-  "repository": "github:VladimirGonchar/aem-cli",
+  "repository": "github:vhonchar/aem-cli",
   "bin": {
     "aem": "./index.js"
   },
