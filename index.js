@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-
-'use strict'
-
 const program = require('commander');
 const AemApplication = require('./lib/AemApplication.js');
 const terminate = require('terminate');
@@ -23,10 +20,7 @@ program
         }).start(options.detached, [], options.timeout)
             .then(process => {
                 console.log('AEM is started. PID is ' + process.pid)
-            }, err => {
-                console.error('Error during startup: ', err.stack || err)
-                process.exit(1)
-            })
+            }).catch(handleRejection)
     })
 
 program
@@ -37,21 +31,19 @@ program
         ps.lookup({
             command: 'java',
             arguments: '-p,' + port
-        },
-            function (err, resultList) {
-                if (err) {
-                    throw new Error(err);
+        }, function (err, resultList) {
+            if (err) {
+                throw new Error(err);
+            }
+            resultList.forEach(function (process) {
+                if (process) {
+                    console.log('Stopping PID: %s, command: %s, arguments: %s', process.pid, process.command, process.arguments);
+                    new AemApplication()
+                        .stop(process.pid, options.signal)
+                        .catch(handleRejection)
                 }
-                resultList.forEach(function (process) {
-                    if (process) {
-                        console.log('Stopping PID: %s, command: %s, arguments: %s', process.pid, process.command, process.arguments);
-                        new AemApplication().stop(process.pid, options.signal).catch(err => {
-                            console.error(err.stack || err)
-                            process.exit(1)
-                        })
-                    }
-                });
             });
+        });
     })
 
 program
@@ -62,10 +54,7 @@ program
     .action((bundle, options) => {
         new AemApplication({ port: options.port })
             .installBundle(bundle, options.timeout)
-            .catch((error) => {
-                console.error(error.stack || error)
-                process.exit(1)
-            })
+            .catch(handleRejection)
     })
 
 program
@@ -76,10 +65,7 @@ program
     .action((zipFile, options) => {
         new AemApplication({ port: options.port })
             .installPkg(zipFile, options.timeout)
-            .catch((error) => {
-                console.error(error.stack || error)
-                process.exit(1)
-            })
+            .catch(handleRejection)
     })
 
 program
@@ -90,10 +76,18 @@ program
     .action((path, options) => {
         new AemApplication({ port: options.port })
             .remove(path, options.timeout)
-            .catch(error => {
-                console.error(error.stack || error)
-                process.exit(1)
-            })
+            .catch(handleRejection)
     })
+
+function handleRejection(e) {
+    console.error(e.stack || e)
+    // Throw exception in separated event to avoid unhandled rejected promise error
+    setTimeout(function () { throw e; });
+}
+
+// for testing purpose
+module.exports = () => {
+    program.parse(process.argv)
+}
 
 program.parse(process.argv);

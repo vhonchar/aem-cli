@@ -1,4 +1,5 @@
 *.class
+.vscode
 
 *license.properties
 

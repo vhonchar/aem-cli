@@ -15,6 +15,9 @@
       ]
     }
   },
+  "scripts": {
+    "test": "mocha"
+  },
   "dependencies": {
     "commander": "^2.12.2",
     "extend": "^3.0.1",
@@ -22,5 +25,11 @@
     "request": "^2.83.0",
     "server-destroy": "^1.0.1",
     "terminate": "^2.1.0"
+  },
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "mocha": "^5.1.1",
+    "nock": "^9.3.0",
+    "proxyquire": "^2.0.1"
   }
 }
