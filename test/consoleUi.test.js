@@ -2,6 +2,9 @@ const AemStub = require('./AemStub')
 const assert = require('assert')
 const proxyquire = require('proxyquire')
 
+let exitFuntion = process.exit
+let exitCode = 0
+
 describe("CLI interface", () => {
     describe("Package", () => {
 
@@ -22,6 +25,8 @@ describe("CLI interface", () => {
             }
         )
 
+        testError("test exception handler in installPkg", ['node.exe', 'aem', 'installPkg', 'some-file'])
+
     })
 
     describe("OSGi", () => {
@@ -40,6 +45,8 @@ describe("CLI interface", () => {
                 expectedConstructorOpts: { port: "4502" },
                 expectedOpts: { timeout: "5", filepath: 'some-file' }
             })
+
+        testError("test exception handler in installBundle", ['node.exe', 'aem', 'installBundle', 'some-file'])
     })
 
     describe("CRX", () => {
@@ -58,6 +65,8 @@ describe("CLI interface", () => {
                 expectedConstructorOpts: { port: "4502" },
                 expectedOpts: { timeout: 0, path: 'path' }
             })
+
+        testError("test exception handler in remove", ['node.exe', 'aem', 'remove', 'some-path'])
     })
 
     describe("Startup", () => {
@@ -77,16 +86,31 @@ describe("CLI interface", () => {
                 expectedOpts: { detached: true, additionalOpts: [], timeout: '1000' }
             })
 
+        testError("test exception handler in start", ['node.exe', 'aem', 'start'])
+
     })
 })
 
 function test(testTitle, argv, { expectedAction, expectedConstructorOpts, expectedOpts } = {}) {
     it(testTitle, () => {
-        aemCli(argv)
+        aemCli().execute(argv)
 
         assert.equal(AemStub.getAction(), expectedAction)
         assert.deepEqual(AemStub.getConstructorOpts(), expectedConstructorOpts)
         assert.deepEqual(AemStub.getOptions(), expectedOpts)
+    })
+}
+
+function testError(title, argv) {
+    it(title, (resolve) => {
+        AemStub.throwException("some error")
+
+        let cli = aemCli()
+        cli.execute(argv)
+        cli.promise.then(() => {
+            assert.equal(exitCode, 1)
+            resolve()
+        })
     })
 }
 
@@ -97,6 +121,13 @@ so we need to create new one each time like it does in reality
 TODO: each test case add new execution of command, 
 because list of commands are static add are duplicated on each import of index.js
 */
-function aemCli(args) {
-    return proxyquire('../index', { './lib/AemApplication.js': AemStub })(args)
+function aemCli() {
+    let cli = proxyquire('../index', { './lib/AemApplication.js': AemStub })
+    exitCode = 0
+    process.exit = function (code) {
+        exitCode = code
+    }
+    return cli;
 }
+
+process.exit = exitFuntion

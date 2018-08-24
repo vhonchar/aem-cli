@@ -1,5 +1,9 @@
 module.exports = class AemStub {
 
+    static throwException(text) {
+        AemStub.exception = text
+    }
+
     static getAction() {
         return AemStub.action
     }
@@ -25,7 +29,7 @@ module.exports = class AemStub {
             additionalOpts: additionalOpts,
             timeout: timeout
         }
-        return new Promise(resolve => resolve({pid: "test pid"}))
+        return this._emulateHandling({pid: "test pid"})
     }
 
     installPkg(filepath, timeout) {
@@ -34,7 +38,7 @@ module.exports = class AemStub {
             filepath: filepath,
             timeout: timeout
         }
-        return new Promise(resolve => resolve())
+        return this._emulateHandling()
     }
 
     installBundle(filepath, timeout) {
@@ -43,8 +47,8 @@ module.exports = class AemStub {
             filepath: filepath,
             timeout: timeout
         }
-        return new Promise(resolve => resolve())
-    } 
+        return this._emulateHandling()
+    }
 
     remove(path, timeout) {
         AemStub.action = 'remove'
@@ -52,6 +56,18 @@ module.exports = class AemStub {
             path: path,
             timeout: timeout
         }
-        return new Promise(resolve => resolve())
+        return this._emulateHandling()
+    }
+
+    _emulateHandling(result) {
+        return new Promise((resolve, reject) => {
+            if(AemStub.exception) {
+                let ex = AemStub.exception
+                AemStub.exception = null
+                reject(ex)
+            } else {
+                resolve(result)
+            }
+        })
     }
 }

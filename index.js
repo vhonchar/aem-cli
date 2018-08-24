@@ -13,7 +13,7 @@ program
     .option('-d, --detached', 'Whether to start AEM in detached mode')
     .option('-t, --timeout <timeout>', 'Timeout in seconds after installation', 30)
     .action(function (options) {
-        new AemApplication({
+        module.exports.promise = new AemApplication({
             quickstart: options.quickstart,
             port: options.port,
             runmodes: options.runmodes
@@ -38,7 +38,7 @@ program
             resultList.forEach(function (process) {
                 if (process) {
                     console.log('Stopping PID: %s, command: %s, arguments: %s', process.pid, process.command, process.arguments);
-                    new AemApplication()
+                    module.exports.promise = new AemApplication()
                         .stop(process.pid, options.signal)
                         .catch(handleRejection)
                 }
@@ -52,7 +52,7 @@ program
     .option('-p, --port <port>', 'AEM port', 4502)
     .option('-t, --timeout <timeout>', 'Timeout in seconds after installation', 5)
     .action((bundle, options) => {
-        new AemApplication({ port: options.port })
+        module.exports.promise = new AemApplication({ port: options.port })
             .installBundle(bundle, options.timeout)
             .catch(handleRejection)
     })
@@ -63,7 +63,7 @@ program
     .option('-p, --port <port>', 'AEM port', 4502)
     .option('-t, --timeout <timeout>', 'Timeout in seconds after installation', 30)
     .action((zipFile, options) => {
-        new AemApplication({ port: options.port })
+        module.exports.promise = new AemApplication({ port: options.port })
             .installPkg(zipFile, options.timeout)
             .catch(handleRejection)
     })
@@ -74,20 +74,19 @@ program
     .option('-p, --port <port>', 'AEM port', 4502)
     .option('-t, --timeout <timeout>', 'Timeout in seconds after installation', 0)
     .action((path, options) => {
-        new AemApplication({ port: options.port })
+        module.exports.promise = new AemApplication({ port: options.port })
             .remove(path, options.timeout)
             .catch(handleRejection)
     })
 
 function handleRejection(e) {
     console.error(e.stack || e)
-    // Throw exception in separated event to avoid unhandled rejected promise error
-    setTimeout(function () { throw e; });
+    process.exit(1)
 }
 
 // for testing purpose
-module.exports = (argv) => {
-    program.parse(argv)
+module.exports.execute = (argv) => {
+    program.parse(argv);
 }
 
 program.parse(process.argv);
