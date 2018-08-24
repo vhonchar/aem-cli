@@ -86,8 +86,8 @@ function handleRejection(e) {
 }
 
 // for testing purpose
-module.exports = () => {
-    program.parse(process.argv)
+module.exports = (argv) => {
+    program.parse(argv)
 }
 
 program.parse(process.argv);

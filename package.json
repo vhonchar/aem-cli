@@ -16,7 +16,8 @@
     }
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "test:coverage": "nyc mocha"
   },
   "dependencies": {
     "commander": "^2.12.2",
@@ -30,6 +31,7 @@
     "assert": "^1.4.1",
     "mocha": "^5.1.1",
     "nock": "^9.3.0",
+    "nyc": "^12.0.2",
     "proxyquire": "^2.0.1"
   }
 }
