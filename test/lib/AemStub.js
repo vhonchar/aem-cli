@@ -29,7 +29,16 @@ module.exports = class AemStub {
             additionalOpts: additionalOpts,
             timeout: timeout
         }
-        return this._emulateHandling({pid: "test pid"})
+        return this._emulateHandling({ pid: "test pid" })
+    }
+
+    stop(pid, signal) {
+        AemStub.action = 'stop'
+        AemStub.options = {
+            pid: pid,
+            signal: signal
+        }
+        return this._emulateHandling()
     }
 
     installPkg(filepath, timeout) {
@@ -61,7 +70,7 @@ module.exports = class AemStub {
 
     _emulateHandling(result) {
         return new Promise((resolve, reject) => {
-            if(AemStub.exception) {
+            if (AemStub.exception) {
                 let ex = AemStub.exception
                 AemStub.exception = null
                 reject(ex)

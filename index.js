@@ -33,16 +33,18 @@ program
             arguments: '-p,' + port
         }, function (err, resultList) {
             if (err) {
-                throw new Error(err);
+                module.exports.promise = new Promise(resolve => resolve())
+                handleRejection(err)
+            } else {
+                resultList.forEach(function (process) {
+                    if (process) {
+                        console.log('Stopping PID: %s, command: %s, arguments: %s', process.pid, process.command, process.arguments);
+                        module.exports.promise = new AemApplication()
+                            .stop(process.pid, options.signal)
+                            .catch(handleRejection)
+                    }
+                });
             }
-            resultList.forEach(function (process) {
-                if (process) {
-                    console.log('Stopping PID: %s, command: %s, arguments: %s', process.pid, process.command, process.arguments);
-                    module.exports.promise = new AemApplication()
-                        .stop(process.pid, options.signal)
-                        .catch(handleRejection)
-                }
-            });
         });
     })
 
